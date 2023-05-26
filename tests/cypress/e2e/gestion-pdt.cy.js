@@ -203,25 +203,7 @@ describe('consultarUsuarios', () => {
 
 
 
-//Activar / Desactivar usuario ANTONIO - DAVID
-
-
-// ACTIVAR USUARIO - Antonio Jesús León Fernández
-
-describe('Eliminar Usuario', () => {
-  it('Debería activar un usuario correctamente', () => {
-      navegarLogin();
-      cy.xpath("//div[@id='menuform:menuPuntoMenu']/ul/li[34]/a").click();
-      //hacer click para desactivar el checkbox de 'Activo>Sí'
-      cy.xpath("//div[@id='formListadoUsuarios:activo_filtro']/div[2]/span").first().click();
-      //hacer click en el botón 'Buscar'
-      cy.xpath("//button[@id='formListadoUsuarios:filtrar']/span[2]").first().click();
-      //hacer click en el botón 'Activar Usuario'
-      cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:7:activarUsuario']/span").first().click();
-      //hacer click en el boton 'Sí' en la ventana emergente 'Confirmar Operación'
-      cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:9:j_idt88']/span").first().click();
-  });
-});
+//Activar / Desactivar usuario ANTONIO LEON - DAVID
 
 //DESACTIVAR USUARIO
 describe('Eliminar Usuario', () => {
@@ -234,6 +216,24 @@ describe('Eliminar Usuario', () => {
     cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:3:eliminarUsuario']/span").first().click();
     //Hacemos click sobre Sí
     cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:3:j_idt88']/span").first().click({force: true});
+  });
+});
+
+// ACTIVAR USUARIO -- ANTONIO LEON
+describe('Activar Usuario', () => {
+  it('Debería activar un usuario correctamente', () => {
+    navegarlogin();
+    cy.xpath("//div[@id='menuform:menuPuntoMenu']/ul/li[34]/a").click();
+    //quitar el check de 'Activo>Sí'
+    cy.xpath("//div[@id='formListadoUsuarios:activo_filtro']/div[2]/span").first().click();
+    //hacer click en el botón 'Buscar'
+    cy.xpath("//button[@id='formListadoUsuarios:filtrar']/span[2]").first().click();
+    // Verifica si el botón de activar usuario existe
+    cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:3:activarUsuario']/span[2]").should('exist')
+    //hacer click en el botón 'Activar Usuario'
+    cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:3:activarUsuario']/span").first().click();
+    //hacer click en el boton 'Sí' en la ventana emergente para confirmar la activación del usuario
+    cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:3:j_idt88']/span").first().click();
   });
 });
 
