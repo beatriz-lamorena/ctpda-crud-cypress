@@ -36,3 +36,14 @@ describe('Relacionar representante a persona tipo jurídicas', () => {
         cy.xpath("//button[@id='formFormulario:guardar']/span[2]").first().click();
     });
 });
+
+//Borrar persona -- Pablo & Alvaro
+describe('borrarPersona', () => {
+
+    it('borrar persona', () => {
+        navegarLogin();
+        cy.xpath("//div[@id='menuForm:menuPuntoMenu']/ul/li[13]/a").click();
+        cy.xpath("//button[@id='formBuscador:tablaPersona:2:deleteButton']/span").first().click();
+        cy.xpath("//button[@id='formBuscador:tablaPersona:4:j_idt85']/span").click();
+    });
+  });
