@@ -226,12 +226,14 @@ describe('Eliminar Usuario', () => {
 //DESACTIVAR USUARIO
 describe('Eliminar Usuario', () => {
   it('debería desactivar un usuario correctamente', () => {
-      navegarLogin();
+    navegarLogin();
       cy.xpath("//div[@id='menuForm:menuPuntoMenu']/ul/li[34]/a").click();
-      //hacer click en el botón 'Eliminar Usuario'
-      cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:3:eliminarUsuario']/span").first().click();
-      //hacer click en el botón 'Sí' en la ventana emergente 'Confirmar Operación'
-      cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:3:j_idt88']/span").first().click();
+      //Hacemos click en el checkbox de activo, para eliminar cuando usuario esté activo
+      cy.xpath("//div[@id='formListadoUsuarios:activo_filtro']/div[2]/span").click();
+    //Pulsamos botón desactivar
+    cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:3:eliminarUsuario']/span").first().click();
+    //Hacemos click sobre Sí
+    cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:3:j_idt88']/span").first().click({force: true});
   });
 });
 
