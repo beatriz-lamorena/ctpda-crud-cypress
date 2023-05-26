@@ -39,11 +39,13 @@ describe('Relacionar representante a persona tipo jurídicas', () => {
 
 //Borrar persona -- Pablo & Alvaro
 describe('borrarPersona', () => {
-
     it('borrar persona', () => {
         navegarLogin();
+        //accedemos al apartado o menú de Personas
         cy.xpath("//div[@id='menuForm:menuPuntoMenu']/ul/li[13]/a").click();
+        //Hacer click al botón de borrar persona (x)
         cy.xpath("//button[@id='formBuscador:tablaPersona:2:deleteButton']/span").first().click();
+        //Confirmar borrado de la persona
         cy.xpath("//button[@id='formBuscador:tablaPersona:4:j_idt85']/span").click();
     });
   });
