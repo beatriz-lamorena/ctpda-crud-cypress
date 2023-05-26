@@ -49,21 +49,32 @@ describe('borrarPersona', () => {
         cy.xpath("//button[@id='formBuscador:tablaPersona:4:j_idt85']/span").click();
     });
   });
-//RELACIONAR PERSONA, DE CUALQUIER TIPO, CON EXPEDIENTES
+//RELACIONAR PERSONA, DE CUALQUIER TIPO, CON EXPEDIENTES -- David Dorante Lucas
 describe('Relacionar persona, de cualquier tipo, con expedientes', () => {
     it('debería de relacionar las personas según sus expedientes', () =>{
         navegarLogin();
+        //Accedemos al apartado o menú de Generar Expedientes
         cy.xpath("//div[@id='menuForm:menuPuntoMenu']/ul/li[4]/a/span").first().click();
+        //Clickeamos en el apartado número expediente
         cy.xpath("//input[@id='formListadoExpedientes:numeroExpediente_filtro']").first().click();
+        //Rellenamos el campo número expediente
         cy.xpath("//input[@id='formListadoExpedientes:numeroExpediente_filtro']").type('PS-2023/005');
+        //Hacemos click en el campo persona
         cy.xpath("//input[@id='formListadoExpedientes:persona_filtro']").first().click();
+        //Rellenamos el campo persona
         cy.xpath("//input[@id='formListadoExpedientes:persona_filtro']").type('DAVID SL');
+        //Hacemos click en el campo NIF/CIF de la persona
         cy.xpath("//input[@id='formListadoExpedientes:ident_persona_filtro']").first().click();
+        //Rellenamos el campo NIF/CIF de la persona
         cy.xpath("//input[@id='formListadoExpedientes:ident_persona_filtro']").type('DAVID');
+        //Hacemos click en el botón Nuevo Expediente
         cy.xpath("//button[@id='formListadoExpedientes:nuevoExpediente']/span[2]").first().click();
         cy.wait(2000);
+        //Hacemos click sobre la barra Seleccione el tipo de expediente
         cy.xpath("//label[@id='formDialogExpedientes:comboTipoExpediente_label']").first().click();
+        //Seleccionamos el tipo de expediente
         cy.xpath("//li[@id='formDialogExpedientes:comboTipoExpediente_1']").first().click();
+        //Hacemos click en el botón guardar
         cy.xpath("//button[@id='formDialogExpedientes:validarTipExp']/span[2]").first().click();
 });
 });
