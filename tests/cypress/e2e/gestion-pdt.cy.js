@@ -12,40 +12,46 @@ function navegarLogin() {
       cy.xpath("//input[@id='formLogin:loginUsuario']").type(id_usuario);
       cy.xpath("//input[@id='formLogin:contrasenyaUsuario']").type(password_usuario);
   });
-
-  cy.xpath("//button[@id='formLogin:acceder']/span").click();
-  cy.xpath("//div[@id='formLogin:perfilesAsociados']/div[3]/span").click();
-  cy.xpath("//li[@id='formLogin:perfilesAsociados_1']").click();
   cy.xpath("//button[@id='formLogin:acceder']/span").click();
   cy.wait(2000);
 }
 
-//Editar Usuario JOSE RAMON
+//Editar Usuario PEDRO GARCIA Y PEDRO ROMERO
 
 describe('editarUsuario', () => {
   it('navegarLogin', () => {
-      navegarLogin();
-      cy.xpath("//div[@id='menuForm:menuPuntoMenu']/ul/li[34]/a").click();
-      cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:1:edicionUsuario']/span").first().click();
-      cy.xpath("//input[@id='formFormularioUsuarios:nombre']").clear().type(' ');
-      cy.xpath("//button[@id='formFormularioUsuarios:guardar']/span[2]").click();
-      cy.xpath("//div[@id='primefacesmessagedlg']/div/a/span").click();
-      cy.xpath("//input[@id='formFormularioUsuarios:nombre']").clear().type('Nuevo nombre');
-      cy.xpath("//button[@id='formFormularioUsuarios:guardar']/span[2]").click();
-      //cy.xpath("//div[@id='primefacesmessagedlg']/div/a/span").first().click();
-      //cy.xpath("//button[@id='formFormularioUsuarios:guardar']/span[2]").click();
-      cy.xpath("//div[@id='primefacesmessagedlg']/div/a/span").click();
-      cy.xpath("//input[@id='formFormularioUsuarios:email']").clear().type('correo_invalido');
-      cy.xpath("//button[@id='formFormularioUsuarios:guardar']/span[2]").click();
-      cy.xpath("//div[@id='primefacesmessagedlg']/div/a/span").click();
-      cy.xpath("//input[@id='formFormularioUsuarios:nombre']").clear().type('Nombre demasiado largo que excede el límite permitido');
-      cy.xpath("//button[@id='formFormularioUsuarios:guardar']/span[2]").click();
-      cy.xpath("//div[@id='primefacesmessagedlg']/div/a/span").click();
-      cy.xpath("//input[@id='formFormularioUsuarios:nombre']").clear().type('Nuevo nombre');
-      cy.xpath("//input[@id='formFormularioUsuarios:cancelar']/span[2]").first().click();
-      cy.xpath("//button[@id='formFormularioUsuarios:j_idt103']/span").click();
-  });
+    navegarLogin();
+    cy.xpath("//div[@id='menuForm:menuPuntoMenu']/ul/li[34]/a").click();
+    cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:1:edicionUsuario']/span")
+      .first()
+      .click();
+    cy.xpath("//input[@id='formFormularioUsuarios:nombre']")
+      .clear()
+      .type(' ');
+    cy.xpath("//button[@id='formFormularioUsuarios:guardar']/span[2]")
+      .click()
+    .then(($element) => {
+      expect($element).to.be.visible;
+      cy.log('Debe rellenar los campos obligatorios');
     });
+    cy.wait(2000); // Esperar 2 segundos adicionales antes de verificar el mensaje
+    cy.xpath("//div[@id='primefacesmessagedlg']/div/a/span").click();
+    cy.xpath("//input[@id='formFormularioUsuarios:nombre']")
+      .clear()
+      .type('Nuevo nombre');
+    cy.xpath("//button[@id='formFormularioUsuarios:guardar']/span[2]")
+      .click();
+    cy.wait(4000);
+    // Verificar el mensaje de confirmación
+    cy.xpath("//div[@id='formFormularioUsuarios:messagesFormulario']/div/ul/li/span[2]")
+    .then(($element) => {
+      expect($element).to.be.visible;
+      cy.log('El usuario ha sido editado correctamente');
+    });
+      cy.wait(400);
+  });
+});
+
 
 
 //Buscar usuarios JUAN MARTIN CANDELA
@@ -86,29 +92,43 @@ describe('buscarUsuarios', () => {
       cy.wait(2000);
   }); 
 
-});
-
+}); 
 
 //Nuevo usuario JUAN MARTIN 
+
+import { v4 as codigo_nuevo } from 'uuid';
+
 describe('guardarUsuarios', () => {
 
   it('guardar usuarios', () => {
       navegarLogin();
       cy.xpath("//div[@id='menuForm:menuPuntoMenu']/ul/li[34]/a").click();
       cy.xpath("//button[@id='formListadoUsuarios:nuevoUsuario']/span[2]").click();
-      cy.xpath("//input[@id='formFormularioUsuarios:nombre']").type("Jose");
-      cy.xpath("//input[@id='formFormularioUsuarios:primerApellido']").type("Palos");
-      cy.xpath("//input[@id='formFormularioUsuarios:segundoApellido']").type("Guiso");
+      cy.xpath("//input[@id='formFormularioUsuarios:nombre']").type("Ana");
+      cy.xpath("//input[@id='formFormularioUsuarios:primerApellido']").type("Romero");
+      cy.xpath("//input[@id='formFormularioUsuarios:segundoApellido']").type("Barbeito");
       cy.xpath("//label[@id='formFormularioUsuarios:comboValorIdentificador_label']").click();
       cy.xpath("//li[@id='formFormularioUsuarios:comboValorIdentificador_4']").click();
-      cy.xpath("//input[@id='formFormularioUsuarios:identificador']").type("JOSEEX12");
-      cy.xpath("//input[@id='formFormularioUsuarios:email']").type("juan.martin@soltel.es");
-      cy.xpath("//input[@id='formFormularioUsuarios:telefono_input']").type("602020220");
-      cy.xpath("//input[@id='formFormularioUsuarios:login']").type("jose.palos");
+      // Generar un identificador único
+      const identificador = codigo_nuevo();
+
+      // Resto del código...
+      cy.xpath("//input[@id='formFormularioUsuarios:identificador']")
+      .type(identificador);
+      cy.xpath("//input[@id='formFormularioUsuarios:email']").type("ana.romero@soltel.es");
+      cy.xpath("//input[@id='formFormularioUsuarios:telefono_input']").type("612020220");
+      cy.xpath("//input[@id='formFormularioUsuarios:login']").type("ana.romero");
       cy.xpath("//button[@id='formFormularioUsuarios:guardar']/span[2]").click();
-      
+      cy.wait(400);
+      cy.xpath("//div[@id='formFormularioUsuarios:messagesFormulario']/div/ul/li/span[2]")
+      .then(($element) => {
+        expect($element).to.be.visible;
+        cy.log('Usuario nuevo creado y guardado correctamente');
+      });
+      cy.wait(400);
+
   });
-});
+}); 
 
 //Validaciones de campos PEDRO GARCIA
 
@@ -129,8 +149,13 @@ describe('Comprobación de formulario de creación de nuevo usuario', () => {
       cy.xpath("//input[@id='formFormularioUsuarios:login']").should('have.value', '');
       cy.xpath("//button[@id='formFormularioUsuarios:guardar']/span[2]").click({ force: true }); //porque realmente queremos que salga true
       cy.xpath("//div[@id='primefacesmessagedlg']/div/a/span").click();
+      cy.xpath("//div[@id='primefacesmessagedlg']/div[2]/span[2]")
+      .then(($element) => {
+        expect($element).to.be.visible;
+        cy.log('No ha rellenado ningun campo');
+      });
       // de comprobacion de error
-      cy.wait(2000)
+      cy.wait(4000)
 
       //Valida el campo 1 obligatorio
       cy.xpath("//input[@id='formFormularioUsuarios:nombre']").should('have.value', '');
@@ -145,7 +170,13 @@ describe('Comprobación de formulario de creación de nuevo usuario', () => {
       cy.xpath("//button[@id='formFormularioUsuarios:guardar']/span[2]").click();
       cy.xpath("//button[@id='formFormularioUsuarios:guardar']/span[2]").click({ force: true });
       cy.xpath("//div[@id='primefacesmessagedlg']/div/a/span").click();
-      cy.wait(2000)
+      cy.xpath("//div[@id='primefacesmessagedlg']/div[2]/span[2]")
+      .then(($element) => {
+        expect($element).to.be.visible;
+        cy.log('Rellena el campo obligatorio');
+      });
+      // de comprobacion de error
+      cy.wait(4000)
 
       //Valida el campo 2 obligatorio
       cy.xpath("//div[@id='menuForm:menuPuntoMenu']/ul/li[34]/a").click();
@@ -162,7 +193,13 @@ describe('Comprobación de formulario de creación de nuevo usuario', () => {
       cy.xpath("//button[@id='formFormularioUsuarios:guardar']/span[2]").click();
       cy.xpath("//button[@id='formFormularioUsuarios:guardar']/span[2]").click({ force: true });
       cy.xpath("//div[@id='primefacesmessagedlg']/div/a/span").click();
-      cy.wait(2000)
+      cy.xpath("//div[@id='primefacesmessagedlg']/div[2]/span[2]")
+      .then(($element) => {
+        expect($element).to.be.visible;
+        cy.log('Rellena el campo obligatorio');
+      });
+      // de comprobacion de error
+      cy.wait(4000)
 
       //Valida ya existe ese identificador
 
@@ -179,9 +216,65 @@ describe('Comprobación de formulario de creación de nuevo usuario', () => {
       cy.xpath("//input[@id='formFormularioUsuarios:login']").type("agua.agua");
       cy.xpath("//button[@id='formFormularioUsuarios:guardar']/span[2]").click();
       cy.xpath("//button[@id='formFormularioUsuarios:guardar']/span[2]").click({ force: true });
-      cy.wait(2000)
+      cy.xpath("//div[@id='primefacesmessagedlg']/div/a/span").click();
+      cy.xpath("//div[@id='primefacesmessagedlg']/div[2]/span[2]")
+      .then(($element) => {
+        expect($element).to.be.visible;
+        cy.log('El identificador ya existe');
+      });
+      // de comprobacion de error
+      cy.wait(4000)
+
+      //Valida no marca tipo identificador
+
+      cy.xpath("//div[@id='menuForm:menuPuntoMenu']/ul/li[34]/a").click();
+      cy.xpath("//button[@id='formListadoUsuarios:nuevoUsuario']/span[2]").click();
+      cy.xpath("//input[@id='formFormularioUsuarios:nombre']").type("Jose");
+      cy.xpath("//input[@id='formFormularioUsuarios:primerApellido']").type("Maria");
+      cy.xpath("//input[@id='formFormularioUsuarios:segundoApellido']").type("Alta");
+      cy.xpath("//label[@id='formFormularioUsuarios:comboValorIdentificador_label']").click();
+      cy.xpath("//li[@id='formFormularioUsuarios:comboValorIdentificador_0']").click();
+      cy.xpath("//input[@id='formFormularioUsuarios:identificador']").type("MANTEC12");
+      cy.xpath("//input[@id='formFormularioUsuarios:email']").type("agua.martin@soltel.es");
+      cy.xpath("//input[@id='formFormularioUsuarios:telefono_input']").type("612020220");
+      cy.xpath("//input[@id='formFormularioUsuarios:login']").type("agua.agua");
+      cy.xpath("//button[@id='formFormularioUsuarios:guardar']/span[2]").click();
+      cy.xpath("//button[@id='formFormularioUsuarios:guardar']/span[2]").click({ force: true });
+      cy.xpath("//div[@id='primefacesmessagedlg']/div/a/span").click();
+      cy.xpath("//div[@id='primefacesmessagedlg']/div[2]/span[2]")
+      .then(($element) => {
+        expect($element).to.be.visible;
+        cy.log('No ha marcado tipo identificador');
+      });
+      // de comprobacion de error
+      cy.wait(4000)
+
+      //Valida identificador
+
+      cy.xpath("//div[@id='menuForm:menuPuntoMenu']/ul/li[34]/a").click();
+      cy.xpath("//button[@id='formListadoUsuarios:nuevoUsuario']/span[2]").click();
+      cy.xpath("//input[@id='formFormularioUsuarios:nombre']").type("Jose");
+      cy.xpath("//input[@id='formFormularioUsuarios:primerApellido']").type("Maria");
+      cy.xpath("//input[@id='formFormularioUsuarios:segundoApellido']").type("Alta");
+      cy.xpath("//label[@id='formFormularioUsuarios:comboValorIdentificador_label']").click();
+      cy.xpath("//li[@id='formFormularioUsuarios:comboValorIdentificador_4']").click();
+      cy.xpath("//input[@id='formFormularioUsuarios:identificador']");
+      cy.xpath("//input[@id='formFormularioUsuarios:email']").type("agua.martin@soltel.es");
+      cy.xpath("//input[@id='formFormularioUsuarios:telefono_input']").type("612020220");
+      cy.xpath("//input[@id='formFormularioUsuarios:login']").type("agua.agua");
+      cy.xpath("//button[@id='formFormularioUsuarios:guardar']/span[2]").click();
+      cy.xpath("//button[@id='formFormularioUsuarios:guardar']/span[2]").click({ force: true });
+      cy.xpath("//div[@id='primefacesmessagedlg']/div/a/span").click();
+      cy.xpath("//div[@id='primefacesmessagedlg']/div[2]/span[2]")
+      .then(($element) => {
+        expect($element).to.be.visible;
+        cy.log('No ha marcado identificador');
+      });
+      // de comprobacion de error
+      cy.wait(4000)
+
   });
-})
+}) 
 
 
 
@@ -193,7 +286,11 @@ describe('consultarUsuarios', () => {
       navegarLogin();
       cy.xpath("//div[@id='menuForm:menuPuntoMenu']/ul/li[34]/a").click();
       cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:2:consultarUsuario']/span").first().click();
-      cy.xpath("//fieldset[@id='formFormularioUsuarios:bloqueIdentificacion']/legend").click();
+      cy.xpath("//fieldset[@id='formFormularioUsuarios:bloqueIdentificacion']/legend").click()
+            .then(($element) => {
+        expect($element).to.be.visible;
+        cy.log('Consulta hecha');
+      });
 
     
   });
@@ -202,8 +299,7 @@ describe('consultarUsuarios', () => {
 
 
 
-
-//Activar / Desactivar usuario ANTONIO LEON - DAVID
+//Activar / Desactivar usuario PEDRO ROMERO Y PEDRO GARCIA
 
 //DESACTIVAR USUARIO
 describe('Eliminar Usuario', () => {
@@ -213,55 +309,73 @@ describe('Eliminar Usuario', () => {
       //Hacemos click en el checkbox de activo, para eliminar cuando usuario esté activo
       cy.xpath("//div[@id='formListadoUsuarios:activo_filtro']/div[2]/span").click();
     //Pulsamos botón desactivar
-    cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:3:eliminarUsuario']/span").first().click();
+    cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:8:eliminarUsuario']/span").first().click();
     //Hacemos click sobre Sí
-    cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:3:j_idt88']/span").first().click({force: true});
+    cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:8:j_idt88']/span").first().click({force: true})
+    cy.xpath("//div[@id='formListadoUsuarios:messagesListado']/div/ul/li/span[2]")
+    .then(($element) => {
+      expect($element).to.be.visible;
+      cy.log('Usuario desactivado');
+    });
+    cy.wait(4000)
   });
 });
 
 // ACTIVAR USUARIO -- ANTONIO LEON
 describe('Activar Usuario', () => {
   it('Debería activar un usuario correctamente', () => {
-    navegarlogin();
-    cy.xpath("//div[@id='menuform:menuPuntoMenu']/ul/li[34]/a").click();
-    //quitar el check de 'Activo>Sí'
-    cy.xpath("//div[@id='formListadoUsuarios:activo_filtro']/div[2]/span").first().click();
-    //hacer click en el botón 'Buscar'
-    cy.xpath("//button[@id='formListadoUsuarios:filtrar']/span[2]").first().click();
-    // Verifica si el botón de activar usuario existe
-    cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:3:activarUsuario']/span[2]").should('exist')
-    //hacer click en el botón 'Activar Usuario'
-    cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:3:activarUsuario']/span").first().click();
-    //hacer click en el boton 'Sí' en la ventana emergente para confirmar la activación del usuario
-    cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:3:j_idt88']/span").first().click();
+    navegarLogin();
+    cy.xpath("//div[@id='menuForm:menuPuntoMenu']/ul/li[34]/a").click();
+    cy.xpath("//div[@id='formListadoUsuarios:activo_filtro']/div[2]/span").click();
+    cy.xpath("//button[@id='formListadoUsuarios:filtrar']/span[2]").click();
+    cy.wait(400);
+    cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:8:activarUsuario']/span").first().click();
+    cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:9:j_idt88']/span").first().click();
+    cy.xpath("//div[@id='formListadoUsuarios:messagesListado']/div/ul/li/span[2]")
+    .then(($element) => {
+      expect($element).to.be.visible;
+      cy.log('Usuario activado');
+    });
+      cy.wait(400);
+
   });
-});
+}); 
 
 
-//Asignar / Desasignar perfiles ALVARO Y PABLO
+//Asignar / Desasignar perfiles PEDRO ROMERO Y PEDRO GARCIA
 
-//Asigar perfiles
 //Asignar perfiles
 describe('asignarPerfiles', ()=> {
-  it('Asignación de perfiles', () => {
+  it('Asignar perfil', () => {
           navegarLogin();
           //Accede al apartado Usuarios 
           cy.xpath("//div[@id='menuForm:menuPuntoMenu']/ul/li[34]/a").click();
           //Editar Usuario
-          cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:2:edicionUsuario']/span").first().click();
-          cy.xpath("//button[@id='formFormularioUsuarios:abrirBusquedaPerfiles']/span[2]").click();
-          cy.xpath("//button[@id='formFormularioUsuarios:tablaNuevosPerfiles:0:seleccionarPerfil']/span").click();
-          cy.xpath("//button[@id='formFormularioUsuarios:guardar']/span").click();
+          cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:3:edicionUsuario']/span[2]").first().click({ force: true });
+          cy.xpath("//button[@id='formFormularioUsuarios:abrirBusquedaPerfiles']/span[2]").first().click({ force: true });
+          cy.xpath("//button[@id='formFormularioUsuarios:tablaNuevosPerfiles:0:seleccionarPerfil']/span").first().click({ force: true });
+          cy.xpath("//div[@id='formFormularioUsuarios:messagesFormulario']/div").click()    .then(($element) => {
+            expect($element).to.be.visible;
+            cy.log('Asignado correctamente');
+          });
+          cy.wait(5000)
   });
 });
 
 //Desasignar perfiles
 describe('desasignarPerfiles', ()=> {
-  it('should save the usuarios successfully', () => {
+  it('Desasignar perfil', () => {
           navegarLogin();
-          cy.xpath("//div[@id='menuForm:menuPuntoMenu']/ul/li[34]/a").click();
-          cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:4:edicionUsuario']/span").first().click();
-          cy.xpath("//button[@id='formFormularioUsuarios:tablaUsuarioPerfilAsignado:2:eliminarUsuario']/span").first().click();
-          cy.xpath("//button[@id='formFormularioUsuarios:j_idt103']/span").click();
+          cy.xpath("//div[@id='menuForm:menuPuntoMenu']/ul/li[34]/a").click({ force: true });
+          cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:3:edicionUsuario']/span[2]").first().click({ force: true });
+          cy.xpath("//button[@id='formFormularioUsuarios:tablaUsuarioPerfilAsignado:0:eliminarUsuario']/span").first().click();
+          cy.wait(400);      
+          cy.xpath("//button[@id='formFormularioUsuarios:j_idt103']/span").click({ force: true });
+          cy.xpath("//div[@id='formFormularioUsuarios:messagesFormulario']/div").click()    .then(($element) => {
+            expect($element).to.be.visible;
+            cy.log('Asignado correctamente');
+          });
+          cy.wait(400)
   });
 });
+
