@@ -168,24 +168,29 @@ function navegarLogin() {
     })
     
 
-    /* //Relacionar representante a personas de tipo jurídica -- Antonio Leon
+    //Relacionar representante a personas de tipo jurídica -- Codigo: Antonio Leon ; Assertions: Juan Martín
     describe('Relacionar representante a persona tipo jurídicas', () => {
         it('Debería relacionar un representante a una persona tipo jurídica desde el formulario', () => {
-            navegarlogin();
+            navegarLogin();
+            //Entrar en el apartado de personas y validarlo - Juan Martin
+            cy.xpath("//div[@id='menuForm:menuPuntoMenu']/ul/li[13]/a").should('have.text','Personas').click();
             //Editar un usuario creado haciendo click en el boton de 'Editar'
-            cy.xpath("//button[@id='formBuscador:tablaPersona:6:edicionPersona']/span").first().click();
+            cy.xpath("//button[@id='formBuscador:tablaPersona:6:edicionPersona']/span").should('have.class','pi-pencil').first().click(); //Assertion: JM
             //Verificar que esta marcada la opcion 'Juridica'
-            cy.xpath("//table[@id='formFormulario:valorTipoPersona']/tbody/tr/td[2]/div/div[2]/span").first().click();
+            cy.xpath("//table[@id='formFormulario:valorTipoPersona']/tbody/tr/td[2]/div/div[2]").first().click().should('have.class', 'ui-state-active'); //Assertion: JM
             //Buscar persona dentro del apartado representantes
-            cy.xpath("//button[@id='formFormulario:abrirBusquedaRepresentantes']/span[2]").first().click();
+            cy.wait(2000);
+            cy.xpath("//button[@id='formFormulario:abrirBusquedaRepresentantes']/span[2]").should('be.visible').and('have.text', 'Buscar persona').first().click(); //Assertion: JM
             //Añadir representante
-            cy.xpath("//button[@id='formFormulario:tablaNuevosRepresentantes:0:seleccionarRepre']/span").first().click();
+            cy.wait(2000);
+            cy.xpath("//button[@id='formFormulario:tablaNuevosRepresentantes:0:seleccionarRepre']/span").should('be.visible').and('have.class', 'pi-plus-circle').first().click(); //Assertion: JM
             //Guardar la asignación de representante
-            cy.xpath("//button[@id='formFormulario:guardar']/span[2]").first().click();
+            cy.wait(2000);
+            cy.xpath("//button[@id='formFormulario:guardar']/span[2]").should('have.text', 'Guardar').first().click(); //Assertion: JM
         });
     });
     
-    //Borrar persona -- Pablo & Alvaro
+    /*//Borrar persona -- Pablo & Alvaro
     describe('borrarPersona', () => {
         it('borrar persona', () => {
             navegarLogin();
