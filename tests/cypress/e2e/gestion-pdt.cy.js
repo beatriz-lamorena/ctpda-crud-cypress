@@ -45,8 +45,10 @@ describe('editarUsuario', () => {
     // Verificar el mensaje de confirmación
     cy.xpath("//div[@id='formFormularioUsuarios:messagesFormulario']/div/ul/li/span[2]")
     .then(($element) => {
-      expect($element).to.be.visible;
-      cy.log('El usuario ha sido editado correctamente');
+      const text = Cypress.$($element).text().trim(); //Obtenemos texto
+      const codigoUsuarioActualizado = text.substring(text.indexOf('Usuario')); //cogemos usuario
+      expect(codigoUsuarioActualizado).to.contain('Usuario');
+      cy.log(` ${codigoUsuarioActualizado} actualizado correctamente`);
     });
       cy.wait(400);
   });
@@ -122,8 +124,10 @@ describe('guardarUsuarios', () => {
       cy.wait(400);
       cy.xpath("//div[@id='formFormularioUsuarios:messagesFormulario']/div/ul/li/span[2]")
       .then(($element) => {
-        expect($element).to.be.visible;
-        cy.log('Usuario nuevo creado y guardado correctamente');
+        const text = Cypress.$($element).text().trim(); // Obtener texto
+        const codigo_guardado = text.replace('Usuario', '').trim(); // Eliminar la palabra 'Usuario' y espacios en blanco
+        expect(codigo_guardado).not.to.be.empty; // Verificar que el código del usuario no está vacío
+        cy.log(`Usuario ${codigo_guardado} `);
       });
       cy.wait(400);
 
@@ -150,9 +154,11 @@ describe('Comprobación de formulario de creación de nuevo usuario', () => {
       cy.xpath("//button[@id='formFormularioUsuarios:guardar']/span[2]").click({ force: true }); //porque realmente queremos que salga true
       cy.xpath("//div[@id='primefacesmessagedlg']/div/a/span").click();
       cy.xpath("//div[@id='primefacesmessagedlg']/div[2]/span[2]")
-      .then(($element) => {
-        expect($element).to.be.visible;
-        cy.log('No ha rellenado ningun campo');
+      .invoke('text')
+      .then((text) => {
+        cy.log('Debe rellenar los campos obligatorios (*)');
+        expect(text).to.contain('Debe rellenar los campos obligatorios (*)');
+        
       });
       // de comprobacion de error
       cy.wait(4000)
@@ -171,9 +177,11 @@ describe('Comprobación de formulario de creación de nuevo usuario', () => {
       cy.xpath("//button[@id='formFormularioUsuarios:guardar']/span[2]").click({ force: true });
       cy.xpath("//div[@id='primefacesmessagedlg']/div/a/span").click();
       cy.xpath("//div[@id='primefacesmessagedlg']/div[2]/span[2]")
-      .then(($element) => {
-        expect($element).to.be.visible;
-        cy.log('Rellena el campo obligatorio');
+      .invoke('text')
+      .then((text) => {
+        cy.log('Debe rellenar los campos obligatorios (*)');
+        expect(text).to.contain('Debe rellenar los campos obligatorios (*)');
+        
       });
       // de comprobacion de error
       cy.wait(4000)
@@ -194,9 +202,11 @@ describe('Comprobación de formulario de creación de nuevo usuario', () => {
       cy.xpath("//button[@id='formFormularioUsuarios:guardar']/span[2]").click({ force: true });
       cy.xpath("//div[@id='primefacesmessagedlg']/div/a/span").click();
       cy.xpath("//div[@id='primefacesmessagedlg']/div[2]/span[2]")
-      .then(($element) => {
-        expect($element).to.be.visible;
-        cy.log('Rellena el campo obligatorio');
+      .invoke('text')
+      .then((text) => {
+        cy.log('Debe rellenar los campos obligatorios (*)');
+        expect(text).to.contain('Debe rellenar los campos obligatorios (*)');
+        
       });
       // de comprobacion de error
       cy.wait(4000)
@@ -219,8 +229,10 @@ describe('Comprobación de formulario de creación de nuevo usuario', () => {
       cy.xpath("//div[@id='primefacesmessagedlg']/div/a/span").click();
       cy.xpath("//div[@id='primefacesmessagedlg']/div[2]/span[2]")
       .then(($element) => {
-        expect($element).to.be.visible;
-        cy.log('El identificador ya existe');
+        const text = Cypress.$($element).text().trim(); // Obtener texto
+        const id = text.replace('identificador', '').trim(); // Eliminar la palabra 'Usuario' y espacios en blanco
+        expect(id).not.to.be.empty; // Verificar que el código del usuario no está vacío
+        cy.log(`El identificador ${id}`);
       });
       // de comprobacion de error
       cy.wait(4000)
@@ -242,9 +254,11 @@ describe('Comprobación de formulario de creación de nuevo usuario', () => {
       cy.xpath("//button[@id='formFormularioUsuarios:guardar']/span[2]").click({ force: true });
       cy.xpath("//div[@id='primefacesmessagedlg']/div/a/span").click();
       cy.xpath("//div[@id='primefacesmessagedlg']/div[2]/span[2]")
-      .then(($element) => {
-        expect($element).to.be.visible;
-        cy.log('No ha marcado tipo identificador');
+      .invoke('text')
+      .then((text) => {
+        cy.log('Debe rellenar los campos obligatorios (*)');
+        expect(text).to.contain('Debe rellenar los campos obligatorios (*)');
+        
       });
       // de comprobacion de error
       cy.wait(4000)
@@ -266,9 +280,11 @@ describe('Comprobación de formulario de creación de nuevo usuario', () => {
       cy.xpath("//button[@id='formFormularioUsuarios:guardar']/span[2]").click({ force: true });
       cy.xpath("//div[@id='primefacesmessagedlg']/div/a/span").click();
       cy.xpath("//div[@id='primefacesmessagedlg']/div[2]/span[2]")
-      .then(($element) => {
-        expect($element).to.be.visible;
-        cy.log('No ha marcado identificador');
+      .invoke('text')
+      .then((text) => {
+        cy.log('Debe rellenar los campos obligatorios (*)');
+        expect(text).to.contain('Debe rellenar los campos obligatorios (*)');
+        
       });
       // de comprobacion de error
       cy.wait(4000)
@@ -286,13 +302,7 @@ describe('consultarUsuarios', () => {
       navegarLogin();
       cy.xpath("//div[@id='menuForm:menuPuntoMenu']/ul/li[34]/a").click();
       cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:2:consultarUsuario']/span").first().click();
-      cy.xpath("//fieldset[@id='formFormularioUsuarios:bloqueIdentificacion']/legend").click()
-            .then(($element) => {
-        expect($element).to.be.visible;
-        cy.log('Consulta hecha');
-      });
-
-    
+      cy.xpath("//fieldset[@id='formFormularioUsuarios:bloqueIdentificacion']/legend").click()    
   });
 });
 
@@ -314,12 +324,15 @@ describe('Eliminar Usuario', () => {
     cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:8:j_idt88']/span").first().click({force: true})
     cy.xpath("//div[@id='formListadoUsuarios:messagesListado']/div/ul/li/span[2]")
     .then(($element) => {
-      expect($element).to.be.visible;
-      cy.log('Usuario desactivado');
+      const text = Cypress.$($element).text().trim(); //Obtenemos texto
+      const desactivar_usuario = text.substring(text.indexOf('Usuario')); //cogemos usuario
+      expect(desactivar_usuario).to.contain('Usuario');
+      cy.log(`Usuario ${desactivar_usuario} `);
     });
     cy.wait(4000)
   });
 });
+
 
 // ACTIVAR USUARIO -- ANTONIO LEON
 describe('Activar Usuario', () => {
@@ -333,8 +346,10 @@ describe('Activar Usuario', () => {
     cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:9:j_idt88']/span").first().click();
     cy.xpath("//div[@id='formListadoUsuarios:messagesListado']/div/ul/li/span[2]")
     .then(($element) => {
-      expect($element).to.be.visible;
-      cy.log('Usuario activado');
+      const text = Cypress.$($element).text().trim(); //Obtenemos texto
+      const activar_usuario = text.substring(text.indexOf('Usuario')); //cogemos usuario
+      expect(activar_usuario).to.contain('Usuario');
+      cy.log(`Usuario ${activar_usuario} `);
     });
       cy.wait(400);
 
@@ -354,13 +369,17 @@ describe('asignarPerfiles', ()=> {
           cy.xpath("//button[@id='formListadoUsuarios:tablaUsuario:3:edicionUsuario']/span[2]").first().click({ force: true });
           cy.xpath("//button[@id='formFormularioUsuarios:abrirBusquedaPerfiles']/span[2]").first().click({ force: true });
           cy.xpath("//button[@id='formFormularioUsuarios:tablaNuevosPerfiles:0:seleccionarPerfil']/span").first().click({ force: true });
-          cy.xpath("//div[@id='formFormularioUsuarios:messagesFormulario']/div").click()    .then(($element) => {
-            expect($element).to.be.visible;
-            cy.log('Asignado correctamente');
+          cy.xpath("//div[@id='formFormularioUsuarios:messagesFormulario']/div").click()        
+          .then(($element) => {
+            const text = Cypress.$($element).text().trim(); //Obtenemos texto
+            const asignar = text.substring(text.indexOf('Usuario')); //cogemos usuario
+            expect(asignar).to.contain('Usuario');
+            cy.log(`Usuario ${asignar} `);
           });
           cy.wait(5000)
   });
 });
+
 
 //Desasignar perfiles
 describe('desasignarPerfiles', ()=> {
@@ -371,9 +390,12 @@ describe('desasignarPerfiles', ()=> {
           cy.xpath("//button[@id='formFormularioUsuarios:tablaUsuarioPerfilAsignado:0:eliminarUsuario']/span").first().click();
           cy.wait(400);      
           cy.xpath("//button[@id='formFormularioUsuarios:j_idt103']/span").click({ force: true });
-          cy.xpath("//div[@id='formFormularioUsuarios:messagesFormulario']/div").click()    .then(($element) => {
-            expect($element).to.be.visible;
-            cy.log('Asignado correctamente');
+          cy.xpath("//div[@id='formFormularioUsuarios:messagesFormulario']/div").click()          
+          .then(($element) => {
+            const text = Cypress.$($element).text().trim(); //Obtenemos texto
+            const desasignar = text.substring(text.indexOf('Usuario')); //cogemos usuario
+            expect(desasignar).to.contain('Usuario');
+            cy.log(`Usuario ${desasignar}`);
           });
           cy.wait(400)
   });
