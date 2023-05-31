@@ -221,7 +221,7 @@ describe('Editar/Consultar persona jurídica', () => {
             $input.val(''); // Limpia el valor del campo directamente
             return $input;
           })
-          .type("ZP");
+          .type("AS");
       
         cy.xpath("//label[@id='formFormulario:comboValorSexo_label']").click();
         cy.xpath("//li[@id='formFormulario:comboValorSexo_2']").click();
